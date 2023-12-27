@@ -17,7 +17,4 @@ EntityFrameworkCore;
 
 ## Cum să Rulezi Proiectul
 
-```bash
-# Exemplu de comenzi de instalare sau rulare
-dotnet build
-dotnet run
+
