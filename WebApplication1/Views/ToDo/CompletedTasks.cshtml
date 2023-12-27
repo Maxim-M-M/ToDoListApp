@@ -1,0 +1,51 @@
+﻿@model IEnumerable<ToDo>
+
+<h2>Completed Tasks</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateCompleted)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateClosed)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model is not null)
+        {
+            @foreach (var item in Model)
+            {
+                <tr class="completed-task">
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DateCompleted)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DateClosed)
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="5">No completed tasks</td>
+            </tr>
+        }
+    </tbody>
+</table>

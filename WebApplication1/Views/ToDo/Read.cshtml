@@ -1,0 +1,94 @@
+﻿@model IEnumerable<ToDo>
+
+<h2>ToDo List</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateCompleted)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsCompleted)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model is not null && Model.Any())
+        {
+            @foreach (var item in Model)
+            {
+                <tr id="todoRow_@item.TaskId" class="@(item.IsCompleted ? "completed-task" : "")">
+                    <td>
+                        <div class="task-text">
+                            @Html.DisplayFor(modelItem => item.Title)
+                        </div>
+                    </td>
+                    <td>
+                        <div class="task-text">
+                            @Html.DisplayFor(modelItem => item.Description)
+                        </div>
+                    </td>
+                    <td>
+                        <div class="task-text">
+                            @Html.DisplayFor(modelItem => item.DateCompleted)
+                        </div>
+                    </td>
+                    <td>
+                        <input type="checkbox" id="completeCheckbox_@item.TaskId" asp-for="@item.IsCompleted" onchange="markAsCompleted(@item.TaskId)" />
+                    </td>
+                    <td>
+                        <a asp-action="Update" asp-route-id="@item.TaskId">Update</a> |
+                        <a asp-action="Delete" asp-route-id="@item.TaskId">Delete</a>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="5">Nu sunt Date</td>
+            </tr>
+        }
+    </tbody>
+</table>
+<script>
+    function markAsCompleted(todoId) {
+        fetch(`/ToDo/MarkAsCompleted/${todoId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            credentials: 'same-origin'
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Task marked as completed:', data);
+
+                const todoRow = document.getElementById(`todoRow_${todoId}`);
+
+                // Șterge rândul dacă task-ul este marcat ca fiind complet
+                if (data.isCompleted) {
+                    todoRow.remove();
+                } else {
+                    todoRow.classList.remove('completed-task');
+                }
+            })
+            .catch(error => {
+                console.error('Error marking task as completed:', error);
+            });
+    }
+</script>
