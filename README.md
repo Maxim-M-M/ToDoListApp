@@ -15,6 +15,5 @@ ToDoList este o aplicație simplă pentru gestionarea sarcinilor. Poți adăuga,
 AspNetCore.Mvc;
 EntityFrameworkCore;
 
-## Cum să Rulezi Proiectul
 
 
